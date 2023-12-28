@@ -7,7 +7,7 @@ class Solution {
     
   public:
     // Function to return a list containing the DFS traversal of the graph.
-    vector<int> dfs(int i,vector<int> &ans, unordered_map<int,bool> &isVisited,vector<int>* adj){
+    vector<int> dfs(int& i,vector<int> &ans, unordered_map<int,bool> &isVisited,vector<int>* adj){
         isVisited[i]=true;
         ans.push_back(i);
         for (int j = 0; j < adj[i].size(); j++) {
