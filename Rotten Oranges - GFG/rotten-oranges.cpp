@@ -30,7 +30,8 @@ class Solution
             int r=front.first.first;
             int c=front.first.second;
             int t=front.second;
-            tm=max(t,tm);
+            // tm=max(t,tm);
+            tm=t;
             q.pop();
             for(int i=0;i<4;i++){
                 int row=r+drow[i];
