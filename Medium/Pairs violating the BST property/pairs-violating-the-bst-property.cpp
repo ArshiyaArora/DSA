@@ -92,62 +92,71 @@ struct Node
 };*/
 
 class Solution {
-  public:
+    
+ private:
+    int merge(int arr[], int s, int e, int mid) {
+        int inv_count = 0;
+        int n1 = mid - s + 1;
+        int n2 = e - mid;
 
-    void inorder(Node* root, vector<int> &ans) {
-    if (root == NULL)
-        return;
-    inorder(root->left, ans);
-    ans.push_back(root->data);
-    inorder(root->right, ans);
-}
+        vector<int> arr1(n1);
+        vector<int> arr2(n2);
 
-int merge(int arr[], int l, int m, int r) {
-    int a = l, b = m + 1;
-    vector<int> v;
-    int inversions = 0; 
-    while (a <= m && b <= r) {
-        if (arr[a] > arr[b]) {
-            v.push_back(arr[b]);
-            b++;
-            inversions += (m - a + 1);
-        } else {
-            v.push_back(arr[a]);
-            a++;
+        for (int i = 0; i < n1; i++)
+            arr1[i] = arr[s + i];
+        for (int j = 0; j < n2; j++)
+            arr2[j] = arr[mid + 1 + j];
+
+        int i = 0, j = 0, k = s;
+
+        while (i < n1 && j < n2) {
+            if (arr1[i] <= arr2[j]) {
+                arr[k++] = arr1[i++];
+            } else {
+                arr[k++] = arr2[j++];
+                inv_count += (n1 - i); // Count inversions
+            }
         }
-    }
-    while (a <= m) {
-        v.push_back(arr[a]);
-        a++;
-    }
-    while (b <= r) {
-        v.push_back(arr[b]);
-        b++;
-    }
-    for (int i = l; i <= r; i++) {
-        arr[i] = v[i - l];
-    }
-    return inversions; 
-}
 
-int mergesort(int arr[], int l, int r) {
-    int inversions = 0;
-    if (l >= r)
-        return inversions;
-    int m = l + (r - l) / 2;
-    inversions += mergesort(arr, l, m);
-    inversions += mergesort(arr, m + 1, r);
-    inversions += merge(arr, l, m, r);
-    return inversions;
-}
+        while (i < n1)
+            arr[k++] = arr1[i++];
 
-/*You are required to complete below function */
-int pairsViolatingBST(int n, Node *root) {
-    vector<int> ans;
-    inorder(root, ans);
-    return mergesort(ans.data(), 0, n - 1); 
-}
+        while (j < n2)
+            arr[k++] = arr2[j++];
+
+        return inv_count;
+    }
+
+    int MergeSort(int arr[], int s, int e) {
+        int inv_count = 0;
+        if (s < e) {
+            int mid = (s + e) / 2;
+            inv_count += MergeSort(arr, s, mid);
+            inv_count += MergeSort(arr, mid + 1, e);
+            inv_count += merge(arr, s, e, mid);
+        }
+        return inv_count;
+    }
+
+    void inorderTraversal(Node* curr, vector<int>& arr) {
+        if (curr == NULL)
+            return;
+
+        inorderTraversal(curr->left, arr);
+        arr.push_back(curr->data);
+        inorderTraversal(curr->right, arr);
+    }
+
+public:
+    int pairsViolatingBST(int n, Node* root) {
+        vector<int> arr;
+        inorderTraversal(root, arr);
+        int inv_count = MergeSort(arr.data(), 0, arr.size() - 1);
+        return inv_count;
+    }
 };
+
+
 
 
 //{ Driver Code Starts.
