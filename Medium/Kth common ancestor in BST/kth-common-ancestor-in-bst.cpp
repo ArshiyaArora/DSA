@@ -97,55 +97,37 @@ struct Node
 
 class Solution
 {
-    public:
-    
-    Node * solve(Node* root, int x , int y ){
+    private:
+    void solve(Node* root,int x, int y,vector<int>& ans){
+        if(root==NULL) return;
         
-    if(root==NULL)return NULL;
-        
-    if(root->data==x || root->data == y){
-        return root;
-    }
-        
-    Node * left = solve(root->left, x,y);
-    Node * right = solve(root->right, x, y);
-    if(left==NULL)return right;
-    if(right==NULL)return left;
-        
-    if(left!=NULL && right!=NULL)return root;
-
-    return NULL; 
-}
-    
-void findlevel(Node* root, Node * s, vector<int> res,int &res1,int k){
-    if(root==NULL){
+        if(root->data<x && root->data<y){
+            ans.push_back(root->data);
+            return solve(root->right,x,y,ans);
+        }
+        else if(root->data>x && root->data>y){
+            ans.push_back(root->data);
+            return solve(root->left,x,y,ans);
+        }
+        ans.push_back(root->data);
         return;
     }
-    res.push_back(root->data);  
-    if(root->data == s->data){
-         reverse(res.begin(),res.end());
-    if(res.size()>=k){
-        res1= res[k-1];
-    }
-      return; 
-    }
     
-    findlevel(root->left, s, res, res1,k);
-    findlevel(root->right,s, res, res1,k); 
-  
+    public:
     
-}
-int kthCommonAncestor(Node *root, int k,int x, int y)
-{
-     Node* temp = root;
-    Node * s = solve(temp,x,y );
-    vector<int> res;
-    int res1= -1;
-    reverse(res.begin(),res.end());
-     findlevel(root, s, res,res1,k); 
-   
-    return res1;
-}
+    /*You are required to complete below function */
+    int kthCommonAncestor(Node *root, int k,int x, int y)
+    {
+        vector<int> ans;
+        solve(root,x,y,ans);
+        int n=ans.size();
+        // for(auto i:ans){
+        //     cout<<i<<" ";
+        // }
+        // cout<<endl;
+        if(n<k) return -1;
+        return ans[n-k];
+    }
 };
 
 
