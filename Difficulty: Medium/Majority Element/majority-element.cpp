@@ -10,29 +10,29 @@ using namespace std;
 
 class Solution{
   public:
-     // Function to find majority element in the array
-    // a: input array
-    // size: size of input array
     int majorityElement(int a[], int size)
     {
         
         double half= double(size)/2;
-        // cout<<half;
-        sort(a,a+size);
-        int cnt;
-        int i=0;
-        int element;
-        while(i<size){
-            cnt=1;
-            element =a[i];
-            while(a[i+1] == element && i<size){
-                cnt++;
-                i++;
+        int maj_index = 0, count = 1;
+        for (int i = 1; i < size; i++) {
+            if (a[maj_index] == a[i]){
+                count++;
             }
-            if(cnt>half) return element;
-            else i++;
+            else
+                count--;
+            if (count == 0) {
+                maj_index = i;
+                count = 1;
+            }
         }
-        return -1;
+        int cnt=0;
+        int element = a[maj_index];
+        for(int i=0;i<size;i++){
+            if(a[i] == element) cnt++;
+        }
+        if(cnt>half) return element;
+        else return -1;
     }
 };
 
