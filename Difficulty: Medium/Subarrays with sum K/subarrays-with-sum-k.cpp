@@ -12,12 +12,16 @@ class Solution{
         unordered_map<int,int> m;
         int currSum=0;
         int freq=0;
-        m[0]=1;
         for(int i=0;i<N;i++){
             currSum+=Arr[i];
             
-            int diff =  currSum - k;
-            freq+= m[diff];
+            if(currSum == k) freq++;
+            
+            // int diff =  currSum - k;
+            // if(diff) freq+= m[diff];
+            
+            if (m.find(currSum - k) != m.end())
+            freq += (m[currSum - k]);
             m[currSum]++;
         }
         return freq;
