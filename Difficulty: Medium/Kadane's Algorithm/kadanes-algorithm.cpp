@@ -10,13 +10,13 @@ class Solution {
     // n: size of array
     // Function to find the sum of contiguous subarray with maximum sum.
     long long maxSubarraySum(int arr[], int n) {
-        vector<long long> dp(n);
-        dp[0] = arr[0];
-        long long ans = dp[0];
+        long long prev=arr[0],curr=arr[0];
+        long long ans = prev;
         
         for(int i=1;i<n;i++){
-            dp[i] = max(dp[i-1] + static_cast<long long>(arr[i]) , static_cast<long long>(arr[i]));
-            ans = max(ans,dp[i]);
+            curr = max(prev + static_cast<long long>(arr[i]) , static_cast<long long>(arr[i]));
+            ans = max(ans,curr);
+            prev=curr;
         }
         return ans;
     }
